@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<mods:mods xmlns:mods="http://www.loc.gov/standards/mods/v3/">
+  <mods:abstract>The efficient market hypothesis fails to fully explain market behavior.  Behavioral economics is a new field that contributes insights to stock market analysis.  Throughout history there have been many panics and crashes, with the most recent one being the 2008 housing bubble.  This thesis seeks to find evidence and explain, through behavioral economic theory, why investors panic and behave irrationally to bad news.  It will utilize the asymmetric utility function along with other behavioral economic theory to find evidence through the market reaction to good quarterly earnings reports and bad quarterly earnings reports.  This thesis hopes to show that good news and bad news of equal magnitude result in different reactions in the stock market, as measured through share price and trading volume.</mods:abstract>
+  <mods:titleInfo>
+    <mods:title>Asymmetric Behavior in the Stock Market</mods:title>
+  </mods:titleInfo>
+  <mods:name type="personal">
+    <mods:namePart>Wildnauer-Haigney, Kyle</mods:namePart>
+    <mods:role>
+      <mods:roleTerm type="text" authority="marcrelator">creator</mods:roleTerm>
+    </mods:role>
+  </mods:name>
+  <mods:name type="personal">
+    <mods:role>
+      <mods:roleTerm authority="marcrelator" type="text">thesis advisor</mods:roleTerm>
+    </mods:role>
+    <mods:namePart>Smith, Mark</mods:namePart>
+  </mods:name>
+  <mods:name type="corporate">
+    <mods:role>
+      <mods:roleTerm type="text" authority="marcrelator">sponsor</mods:roleTerm>
+    </mods:role>
+    <mods:namePart>Department of Economics and Business</mods:namePart>
+  </mods:name>
+  <mods:name type="corporate">
+    <mods:namePart>Colorado College</mods:namePart>
+    <mods:role>
+      <mods:roleTerm authority="marcrelator" type="text">degree grantor</mods:roleTerm>
+    </mods:role>
+  </mods:name>
+  <mods:typeOfResource>text</mods:typeOfResource>
+  <mods:genre authority="marcgt">thesis</mods:genre>
+  <mods:originInfo>
+    <mods:place>
+      <mods:placeTerm type="text">Colorado Springs, Colo</mods:placeTerm>
+    </mods:place>
+    <mods:publisher>Colorado College</mods:publisher>
+    <mods:dateCaptured>2011</mods:dateCaptured>
+    <mods:dateIssued keyDate="yes">2011</mods:dateIssued>
+  </mods:originInfo>
+  <mods:language>
+   <mods:languageTerm>eng</mods:languageTerm>
+  </mods:language>
+  <mods:physicalDescription>
+   <mods:extent>51 p. : ill.</mods:extent>
+   <mods:digitalOrigin>born digital</mods:digitalOrigin>
+  </mods:physicalDescription>
+  <mods:note type="thesis" displayLabel="Degree Type">bachelor</mods:note>
+  <mods:note type="thesis" displayLabel="Degree Name">Bachelor of Arts</mods:note>
+  <mods:note type="thesis">Senior Thesis -- Colorado College</mods:note>
+  <mods:note type="bibliography">Includes bibliographical references</mods:note>
+  <mods:subject>
+    <mods:topic>Behavioral Economics</mods:topic>
+  </mods:subject>
+  <mods:subject>
+    <mods:topic>Asymmetric Utility Function</mods:topic>
+  </mods:subject>
+  <mods:subject>
+    <mods:topic>Earnings Reports</mods:topic>
+  </mods:subject>
+</mods:mods>
