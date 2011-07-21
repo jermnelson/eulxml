@@ -32,6 +32,31 @@ class MODSElement(_BaseMODS):
     name = xmlmap.StringField('local-name(.)')
     value = xmlmap.StringField('.')
 
+    def is_empty(self):
+        """Returns True if value is None or length less than 1"""
+        if self.value is None: return True
+        if len(self.value) < 1: return True
+        return False
+
+class abstract(MODSElement):
+    'MODS abstract element'
+    ROOT_NAME = 'abstract'
+    type = xmlmap.StringField('@type',
+                              choices=["review",
+                                       "scope",
+                                       "content"],
+                              required=False)
+
+class access_condition(MODSElement):
+    'MODS accessCondition element'
+    ROOT_NAME = 'accessCondition'
+    type = xmlmap.StringField('@type',
+                              choices=["review",
+                                       "scope",
+                                       "content"],
+                              required=False)
+
+
 class genre(MODSElement):
     'MODS genre element'
     ROOT_NAME = 'genre'
@@ -81,27 +106,35 @@ class role(_BaseMODS):
 class name(_BaseMODS):
     'MODS name element'
     ROOT_NAME = 'name'
-    display_form = xmlmap.StringField("@displayForm",required=False)
+    display_form = xmlmap.StringField("mods:displayForm",required=False)
     name_parts = xmlmap.NodeListField("mods:namePart",namePart)
     roles = xmlmap.NodeListField("mods:role",role)
     type = xmlmap.StringField("@type",
                               choices=["personal",
                                        "corporate",
-                                       "conference"])
+                                       "conference",
+                                       "family"])
 
-
-class note(_BaseMODS):
+class note(MODSElement):
     '''MODS note element'''
+    ROOT_NAME = 'note'
     display_label = xmlmap.StringField("@displayLabel")
-    "display label - `@displayLabel`"
     type = xmlmap.StringField("@type")
-    "free-form type - `@type`"
-    value = xmlmap.StringField(".")
-    "text content of note node"
+
+class typed_note(note):
+    """Extends basic MODSElement is_empty to include display_label 
+       attribute"""
+
+    def is_empty(self):
+        if len(self.display_label) < 0:
+            return self.is_empty()
+        return False
+            
 
 class originInfo(_BaseMODS):
     '''MODS originInfo element includes child mods:place, mods:publisher,
        mods:dateIssued, and mods:dateCaptured elements'''
+    ROOT_NAME = 'originInfo'
     date_captured = xmlmap.StringField('mods:dateCaptured')
     date_issued = xmlmap.StringField('mods:dateIssued')
     date_issued_keydate = xmlmap.StringField('mods:dateIssued/@keyDate',
@@ -110,6 +143,9 @@ class originInfo(_BaseMODS):
     place_term = xmlmap.StringField('mods:place/mods:placeTerm')
     place_term_type = xmlmap.StringField('mods:place/mods:placeTerm/@type')
     publisher = xmlmap.StringField('mods:publisher')
+
+    def is_empty(self):
+        return False
     
 class physicalDescription(_BaseMODS):
     '''MODS physicalDescription element'''
@@ -120,8 +156,9 @@ class physicalDescription(_BaseMODS):
 
 class subject(_BaseMODS):
     '''MODS subjec element with child mods:topic elements'''
+    ROOT_NAME = 'subject'
     geographics = xmlmap.StringListField("mods:geographic")
-    names = xmlmap.StringListField("mods:name")
+    names = xmlmap.NodeListField("mods:name",name)
     temporals = xmlmap.StringListField("mods:temporal")
     topics = xmlmap.StringListField("mods:topic")
 
@@ -131,8 +168,9 @@ class titleInfo(_BaseMODS):
     sub_title = xmlmap.StringField("mods:subTitle",required=False)
     title = xmlmap.StringField("mods:title",required=True)
 
-class typeOfResource(_BaseMODS):
+class typeOfResource(MODSElement):
     'MODS typeOfResource element'
+    ROOT_NAME = 'typeOfResource'
     collection = xmlmap.StringField("@collection",
                                     choices=["yes"])
     manuscript = xmlmap.StringField("@manuscript",
@@ -155,7 +193,7 @@ class MetadataObjectDescriptionSchema(_BaseMODS):
     elements = xmlmap.NodeListField('mods:*', MODSElement)
     'list of all MODS elements as instances of :class:`MODSElement`'
 
-    abstract = xmlmap.StringField('mods:abstract')
+    abstract = xmlmap.NodeField('mods:abstract',abstract)
     genre = xmlmap.NodeField('mods:genre',genre)
     identifiers = xmlmap.NodeListField('mods:identifier',identifier)
     languages = xmlmap.NodeListField('mods:language',language)

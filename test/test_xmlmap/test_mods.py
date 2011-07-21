@@ -35,7 +35,7 @@ class TestMods(unittest.TestCase):
                                 mods.MetadataObjectDescriptionSchema))
 
     def test_basic_fields(self):
-        self.assertEqual(unicode(self.mods.abstract), 
+        self.assertEqual(unicode(self.mods.abstract.value), 
                          u'''The efficient market hypothesis fails to fully explain market behavior.  Behavioral economics is a new field that contributes insights to stock market analysis.  Throughout history there have been many panics and crashes, with the most recent one being the 2008 housing bubble.  This thesis seeks to find evidence and explain, through behavioral economic theory, why investors panic and behave irrationally to bad news.  It will utilize the asymmetric utility function along with other behavioral economic theory to find evidence through the market reaction to good quarterly earnings reports and bad quarterly earnings reports.  This thesis hopes to show that good news and bad news of equal magnitude result in different reactions in the stock market, as measured through share price and trading volume.''')
 
     def test_validation(self):
@@ -171,7 +171,7 @@ class TestCreateMods(unittest.TestCase):
     '''
     def setUp(self):
         self.mods = mods.MetadataObjectDescriptionSchema()
-        self.mods.abstract = '''The value and importance of diversity in one's 
+        self.abstract_txt = u'''The value and importance of diversity in one's 
 portfolio has long been postulated, but it
 was Harry M. Markowitz who proposed the first mathematical model that would allow
 investors to systematically compute the optimal allocation of assets based on individual
@@ -179,6 +179,7 @@ preferences (the investor's utility function), covariance, variance, and expecte
 returns. Adequate diversification can mitigate risk substantially while potentially
 enhancing returns. Markowitz provided investors with the tools to optimally diversify
 their investments.'''
+        self.mods.abstract = mods.abstract(value=self.abstract_txt)
         creator = mods.name(type="personal",
                             display_form="Sargent, Blair M.")
         creator_role = mods.role(role_term=mods.roleTerm(authority='marcrt',
@@ -217,6 +218,19 @@ their investments.'''
                                     value='EN')
         eng_language = mods.language(terms=[english,])
         self.mods.languages.append(eng_language)
+        self.thesis_note = mods.note(type='thesis',
+                                     value='Senior Thesis -- Colorado College')
+        self.mods.notes.append(self.thesis_note)
+        self.origin_info = mods.originInfo(date_captured='2011',
+                                           date_issued='2011',
+                                           date_issued_keydate='yes',
+                                           place_term='Colorado Springs, Colo.',
+                                           place_term_type='text',
+                                           publisher='Colorado College')
+        self.mods.origin_info = self.origin_info
+        self.mods.physical_description = mods.physicalDescription(extent='56 p. ill.',
+                                                                  digital_origin='born digital')
+        self.mods.type_of_resource  = mods.typeOfResource(value="text")
         self.mods.title_info = mods.titleInfo()
         self.mods.title_info.title = 'Security Return Covariance Forecasting ' +\
                                      'and Applications for Multi-Period ' +\
@@ -224,15 +238,10 @@ their investments.'''
        
         
     def test_abstract(self):
-        self.assertEqual(self.mods.abstract,
-                         '''The value and importance of diversity in one's 
-portfolio has long been postulated, but it
-was Harry M. Markowitz who proposed the first mathematical model that would allow
-investors to systematically compute the optimal allocation of assets based on individual
-preferences (the investor's utility function), covariance, variance, and expected value of
-returns. Adequate diversification can mitigate risk substantially while potentially
-enhancing returns. Markowitz provided investors with the tools to optimally diversify
-their investments.''')
+        self.assert_(isinstance(self.mods.abstract,
+                                mods.abstract))
+        self.assertEqual(self.mods.abstract.value,
+                         self.abstract_txt)
 
     def test_advisor(self):
         advisor = self.mods.names[1]
@@ -347,6 +356,33 @@ their investments.''')
         self.assertEqual('EN',
                          english.terms[0].value)
 
+    def test_notes(self):
+        for note in self.mods.notes:
+            self.assert_(isinstance(note,
+                                    mods.note))
+        self.assertEquals(self.mods.notes[0].value,
+                          self.thesis_note.value)
+    
+    def test_originInfo(self):
+        print("Origin info type=%s" % self.origin_info.place_term)
+        self.assert_(isinstance(self.mods.origin_info,
+                                mods.originInfo))
+        self.assertEquals('text',
+                          self.mods.origin_info.place_term_type)
+        self.assertEquals('Colorado Springs, Colo.',
+                          self.mods.origin_info.place_term)
+        self.assertEquals('Colorado College',
+                          self.mods.origin_info.publisher)
+
+
+    def test_physicalDescription(self):
+        self.assert_(isinstance(self.mods.physical_description,
+                                mods.physicalDescription))
+        self.assertEquals('56 p. ill.',
+                          self.mods.physical_description.extent)
+        self.assertEquals('born digital',
+                          self.mods.physical_description.digital_origin)
+
     def test_titleInfo(self):
         self.assert_(isinstance(self.mods.title_info, 
                                 mods.titleInfo))
@@ -355,10 +391,13 @@ their investments.''')
                          'Security Return Covariance Forecasting ' +\
                          'and Applications for Multi-Period ' +\
                          'Mean-Variance Formulation')
+
+    def test_typeOfResource(self):
+        self.assert_(isinstance(self.mods.type_of_resource,
+                                mods.typeOfResource))
+        self.assertEquals('text',
+                          self.mods.type_of_resource.value)
         
-
-
-
 
 
 
